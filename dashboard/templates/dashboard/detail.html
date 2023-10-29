@@ -1,0 +1,74 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Homapage{% endblock %}
+{% block content %}
+
+<div class="container m-3 justify-content-start w-75 overflow-auto">
+    <div class="card">
+        <div class="card-header">
+            Alarm Details
+        </div>
+        <div class="card-body">
+            <h5 class="card-title text-info-emphasis">Alarm ID</h5>
+            <p class="card-text">{{ alarm.id }}</p>
+
+            <h5 class="card-title text-info-emphasis">Name</h5>
+            <p class="card-text">{{ alarm.type.name }}</p>
+
+            <h5 class="card-title text-info-emphasis">Title</h5>
+            <p class="card-text">{{ alarm.type.title }}</p>
+
+            <h5 class="card-title text-info-emphasis">Site/Network Element</h5>
+            <p class="card-text">{{ alarm.site }}</p>
+
+            <h5 class="card-title text-info-emphasis">Cell</h5>
+            <p class="card-text">{{ alarm.cell }}</p>
+
+            <h5 class="card-title text-info-emphasis mb-3">Priority</h5>
+            <p class="badge p-2 {{ alarm.get_priority_css_class }}">{{ alarm.get_priority_display }}</p>
+
+            <h5 class="card-title text-info-emphasis">Description</h5>
+            <p class="card-text ">{{ alarm.type.description }}</p>
+
+            <h5 class="card-title text-info-emphasis">Created at</h5>
+            <p class="card-text">{{ alarm.created_at|date:"Y F j" }} {{ alarm.created_at|date:"H:i" }}</p>
+
+            <a href="#" 
+                class="btn border {% if alarm.ack %}btn-light{% else %}btn-dark{% endif %} mb-3"
+                style="width: 120px">
+                Ack: {{ alarm.ack }}
+            </a><br>
+
+            <a href="{% url "dashboard:alarm_share" alarm.id %}" class="btn btn-primary px-3" style="width: 120px">
+                Send Alarm
+            </a>
+
+        </div>
+    </div>
+
+    {% with comments.count as total_comments %}
+        <h2 class="card-title text-start my-3">
+            {{ total_comments }} comment{{ total_comments|pluralize }}
+        </h2>
+    {% endwith %}
+
+
+    {% for comment in comments %}
+        <div class="card mb-5">
+            <div class="card-header">
+                {{ comment.user|upper }}
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ comment.text|linebreaks }}</p>
+            </div>
+            <div class="card-footer text-muted">
+                {{ comment.created|date:"Y F j" }} {{ comment.created|date:"H:i" }}
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-info-emphasis">There are no comments.</p>
+    {% endfor %}
+
+    {% include "includes/comment_form.html" %}
+</div>
+
+{% endblock %}

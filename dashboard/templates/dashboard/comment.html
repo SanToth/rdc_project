@@ -1,0 +1,14 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Add a comment{% endblock %}
+{% block content %}
+<div class="container m-5">
+    {% if comment %}
+        <h2 class="text-info-emphasis">Az Ön megjegyzése hozzá lett adva.</h2>
+        <p>
+            <a class="text-body-emphasis" href="{{ alarm.get_absolute_url }}">Vissza a bejegyzéshez</a>
+        </p>
+    {% else %}
+        {% include "includes/comment_form.html" %}
+    {% endif %}
+</div>
+{% endblock %}

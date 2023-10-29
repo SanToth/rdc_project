@@ -1,0 +1,59 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Share{% endblock %}
+{% block content %}
+
+<div class="container m-5">
+  {% if sent %}
+    <div class="alert alert-success" role="alert">
+      <h4 class="alert-heading">E-mail successfully sent</h4>
+      <p>"{{ alarm.type.title }}" was successfully sent to {{ form.cleaned_data.to }}.</p>
+    </div>
+    <div class="alert alert-info" role="alert">
+      <h4 class="alert-heading">Form Fields:</h4>
+      <p>"{{ form.name }}</p>
+      <p>"{{ form.email }}</p>
+      <p>"{{ form.to }}</p>
+      <p>"{{ form.comments }}</p>
+    </div>
+  {% else %}
+  <h1>Share Alarm</h1>
+  <p>Alarm Title: {{ alarm.type.title }}</p>
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3 col-3">
+      <div class="form-label">
+        {{ form.name.label_tag }} 
+      </div>
+      <div class="form-group">
+        {{ form.name }}
+      </div>
+    </div>
+    <div class="mb-3 col-3">
+      <div class="form-label">
+        {{ form.email.label_tag }} 
+      </div>
+      <div class="form-group">
+        {{ form.email }}
+      </div>
+    </div>
+    <div class="mb-3 col-3">
+      <div class="form-label">
+        {{ form.to.label_tag }} 
+      </div>
+      <div class="form-group">
+        {{ form.to }}
+      </div>
+    </div>
+    <div class="mb-3">
+      <div class="form-label">
+        {{ form.comments.label_tag }}
+      </div>
+      <div class="form-group">
+        {{ form.comments }}
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Send Message</button>
+  </form>
+  {% endif %}
+</div>
+{% endblock %}
